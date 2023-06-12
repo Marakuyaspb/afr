@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title%} {{article.art_title}} {% endblock %}
+
+{% block content %}
+	
+<h2>{{article.art_title}}</h2>
+<p>{{article.art_text}}</p>
+<em>{{article.art_pub_date}}</em>
+
+<hr>
+{% if latest_comments %}
+	{% for c in latest_comments %}
+	<p>
+		<strong>{{c.author_name}}</strong>
+	</p>
+	<p>{{c.comment_text}}</p>
+{% else %}
+	Комеентариев пока нет. Станьте первым!
+{% endif %}
+<hr>
+
+<form action="{% url 'articles:add_comment' article.id %}" method="POST">
+
+	{% csrf_token %}
+
+	<input type="text" required placeholder="Имя" name="name">
+	<textarea name='text' required='' placeholder="Комментарий" cols='30' rows='10'></textarea>
+	<button type="submit">Опубликовать</button>
+</form>
+
+
+{% endblock %}
